@@ -116,9 +116,16 @@
     
     [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
         if (granted) {
-            [self setupAuthorizedWithDelegate:delegate];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setupAuthorizedWithDelegate:delegate];
+            });
+                        
         } else {
-            [self setupDenied];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self setupDenied];
+            });
         }
         
         dispatch_semaphore_signal(semaphore);
